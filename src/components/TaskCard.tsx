@@ -41,16 +41,16 @@ export default function TaskCard({
 
   return (
     <div className={cn(
-      "bg-white rounded-lg shadow-sm border-l-4 p-4 transition-all duration-200 hover:shadow-md",
+      "bg-white dark:bg-gray-800 rounded-lg shadow-sm border-l-4 p-3 sm:p-4 transition-all duration-200 hover:shadow-md",
       task.completed ? "opacity-75 border-l-green-400" : "border-l-blue-400",
       isOverdue && "border-l-red-400"
     )}>
       <div className="flex items-start justify-between">
-        <div className="flex items-start space-x-3 flex-1">
+        <div className="flex items-start space-x-2 sm:space-x-3 flex-1 min-w-0">
           <button
             onClick={handleToggleComplete}
             disabled={isLoading}
-            className="mt-1 text-gray-400 hover:text-green-500 transition-colors disabled:opacity-50"
+            className="mt-1 text-gray-400 hover:text-green-500 transition-colors disabled:opacity-50 flex-shrink-0"
           >
             {task.completed ? (
               <CheckCircle2 className="h-5 w-5 text-green-500" />
@@ -61,22 +61,22 @@ export default function TaskCard({
 
           <div className="flex-1 min-w-0">
             <h3 className={cn(
-              "text-sm font-medium text-gray-900",
-              task.completed && "line-through text-gray-500"
+              "text-sm font-medium text-gray-900 dark:text-white break-words",
+              task.completed && "line-through text-gray-500 dark:text-gray-400"
             )}>
               {task.title}
             </h3>
             
             {task.description && (
               <p className={cn(
-                "mt-1 text-sm text-gray-600",
-                task.completed && "line-through text-gray-400"
+                "mt-1 text-xs sm:text-sm text-gray-600 dark:text-gray-300 break-words",
+                task.completed && "line-through text-gray-400 dark:text-gray-500"
               )}>
                 {task.description}
               </p>
             )}
 
-            <div className="flex items-center space-x-4 mt-2">
+            <div className="flex flex-wrap items-center gap-2 mt-2">
               {/* 优先级 */}
               <span className={cn(
                 "inline-flex items-center px-2 py-1 rounded-full text-xs font-medium",
@@ -102,7 +102,7 @@ export default function TaskCard({
               {task.dueDate && (
                 <div className={cn(
                   "flex items-center space-x-1 text-xs",
-                  isOverdue ? "text-red-500" : "text-gray-500"
+                  isOverdue ? "text-red-500" : "text-gray-500 dark:text-gray-400"
                 )}>
                   <Calendar className="h-3 w-3" />
                   <span>{formatDate(task.dueDate)}</span>
@@ -113,16 +113,16 @@ export default function TaskCard({
           </div>
         </div>
 
-        <div className="flex items-center space-x-2 ml-4">
+        <div className="flex items-center space-x-1 sm:space-x-2 ml-2 sm:ml-4 flex-shrink-0">
           <button
             onClick={() => onEdit(task)}
-            className="text-gray-400 hover:text-blue-500 transition-colors"
+            className="p-1 sm:p-2 text-gray-400 hover:text-blue-500 transition-colors"
           >
             <Edit2 className="h-4 w-4" />
           </button>
           <button
             onClick={() => onDelete(task.id)}
-            className="text-gray-400 hover:text-red-500 transition-colors"
+            className="p-1 sm:p-2 text-gray-400 hover:text-red-500 transition-colors"
           >
             <Trash2 className="h-4 w-4" />
           </button>

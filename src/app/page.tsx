@@ -137,34 +137,34 @@ export default function Home() {
               </h1>
               <p className="mt-2 text-gray-600 dark:text-gray-300">高效管理您的日常任务</p>
             </div>
-            <div className="flex items-center space-x-3">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
               <ThemeToggle />
               <button
                 onClick={() => setIsImportExportOpen(true)}
-                className="flex items-center space-x-2 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                className="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-xs sm:text-sm"
               >
-                <Download className="h-5 w-5" />
-                <span>导入导出</span>
+                <Download className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="hidden sm:inline">导入导出</span>
               </button>
               <Link
                 href="/stats"
-                className="flex items-center space-x-2 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                className="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-xs sm:text-sm"
               >
-                <BarChart3 className="h-5 w-5" />
-                <span>数据统计</span>
+                <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="hidden sm:inline">数据统计</span>
               </Link>
               <Link
                 href="/categories"
-                className="flex items-center space-x-2 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                className="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-xs sm:text-sm"
               >
-                <Tag className="h-5 w-5" />
-                <span>管理分类</span>
+                <Tag className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="hidden sm:inline">管理分类</span>
               </Link>
               <button
                 onClick={() => setIsTaskFormOpen(true)}
-                className="flex items-center space-x-2 px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
+                className="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors text-xs sm:text-sm"
               >
-                <Plus className="h-5 w-5" />
+                <Plus className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span>新建任务</span>
               </button>
             </div>
