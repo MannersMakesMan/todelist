@@ -10,7 +10,9 @@ import {
   Edit2, 
   Trash2, 
   Calendar,
-  Tag
+  Tag,
+  Square,
+  CheckSquare
 } from 'lucide-react'
 
 interface TaskCardProps {
@@ -18,13 +20,19 @@ interface TaskCardProps {
   onToggleComplete: (id: string, completed: boolean) => void
   onEdit: (task: TaskWithCategory) => void
   onDelete: (id: string) => void
+  isSelected?: boolean
+  onSelect?: (id: string, selected: boolean) => void
+  showSelectBox?: boolean
 }
 
 export default function TaskCard({
   task,
   onToggleComplete,
   onEdit,
-  onDelete
+  onDelete,
+  isSelected = false,
+  onSelect,
+  showSelectBox = false
 }: TaskCardProps) {
   const [isLoading, setIsLoading] = useState(false)
 
@@ -43,10 +51,24 @@ export default function TaskCard({
     <div className={cn(
       "bg-white dark:bg-gray-800 rounded-lg shadow-sm border-l-4 p-3 sm:p-4 transition-all duration-200 hover:shadow-md",
       task.completed ? "opacity-75 border-l-green-400" : "border-l-blue-400",
-      isOverdue && "border-l-red-400"
+      isOverdue && "border-l-red-400",
+      isSelected && "ring-2 ring-blue-500 ring-opacity-50"
     )}>
       <div className="flex items-start justify-between">
         <div className="flex items-start space-x-2 sm:space-x-3 flex-1 min-w-0">
+          {/* 选择框 */}
+          {showSelectBox && (
+            <button
+              onClick={() => onSelect?.(task.id, !isSelected)}
+              className="mt-1 text-gray-400 hover:text-blue-500 transition-colors flex-shrink-0"
+            >
+              {isSelected ? (
+                <CheckSquare className="h-5 w-5 text-blue-500" />
+              ) : (
+                <Square className="h-5 w-5" />
+              )}
+            </button>
+          )}
           <button
             onClick={handleToggleComplete}
             disabled={isLoading}

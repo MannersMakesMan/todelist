@@ -29,3 +29,8 @@ export interface TaskFilters {
   priority?: Priority
   search?: string
 }
+
+export interface BatchActions {
+  selectedTasks: string[]
+  selectAll: boolean
+}

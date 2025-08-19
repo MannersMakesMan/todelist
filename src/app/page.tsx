@@ -8,9 +8,10 @@ import TaskFiltersComponent from '@/components/TaskFilters'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import EmptyState from '@/components/EmptyState'
 import ImportExportModal from '@/components/ImportExportModal'
-import { Plus, List, BarChart3, Tag, Download } from 'lucide-react'
+import { Plus, List, BarChart3, Tag, Download, CheckSquare } from 'lucide-react'
 import Link from 'next/link'
 import ThemeToggle from '@/components/ThemeToggle'
+import BatchActionsBar from '@/components/BatchActionsBar'
 
 export default function Home() {
   const [tasks, setTasks] = useState<TaskWithCategory[]>([])
@@ -20,6 +21,8 @@ export default function Home() {
   const [isTaskFormOpen, setIsTaskFormOpen] = useState(false)
   const [editingTask, setEditingTask] = useState<TaskWithCategory | null>(null)
   const [isImportExportOpen, setIsImportExportOpen] = useState(false)
+  const [selectedTasks, setSelectedTasks] = useState<string[]>([])
+  const [showBatchMode, setShowBatchMode] = useState(false)
 
   // 加载数据
   const loadTasks = async () => {
@@ -117,6 +120,75 @@ export default function Home() {
     }
   }
 
+  // 批量操作函数
+  const handleTaskSelect = (taskId: string, selected: boolean) => {
+    if (selected) {
+      setSelectedTasks([...selectedTasks, taskId])
+    } else {
+      setSelectedTasks(selectedTasks.filter(id => id !== taskId))
+    }
+  }
+
+  const handleSelectAll = () => {
+    setSelectedTasks(tasks.map(task => task.id))
+  }
+
+  const handleDeselectAll = () => {
+    setSelectedTasks([])
+  }
+
+  const handleBatchDelete = async () => {
+    if (!confirm(`确定要删除选中的 ${selectedTasks.length} 个任务吗？`)) return
+
+    try {
+      await Promise.all(
+        selectedTasks.map(id => 
+          fetch(`/api/tasks/${id}`, { method: 'DELETE' })
+        )
+      )
+      await loadTasks()
+      setSelectedTasks([])
+    } catch (error) {
+      console.error('批量删除失败:', error)
+    }
+  }
+
+  const handleBatchComplete = async () => {
+    try {
+      await Promise.all(
+        selectedTasks.map(id => 
+          fetch(`/api/tasks/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ completed: true })
+          })
+        )
+      )
+      await loadTasks()
+      setSelectedTasks([])
+    } catch (error) {
+      console.error('批量完成失败:', error)
+    }
+  }
+
+  const handleBatchUncomplete = async () => {
+    try {
+      await Promise.all(
+        selectedTasks.map(id => 
+          fetch(`/api/tasks/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ completed: false })
+          })
+        )
+      )
+      await loadTasks()
+      setSelectedTasks([])
+    } catch (error) {
+      console.error('批量取消完成失败:', error)
+    }
+  }
+
   // 统计数据
   const stats = {
     total: tasks.length,
@@ -161,6 +233,20 @@ export default function Home() {
                 <Tag className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span className="hidden sm:inline">管理分类</span>
               </Link>
+              <button
+                onClick={() => {
+                  setShowBatchMode(!showBatchMode)
+                  setSelectedTasks([])
+                }}
+                className={`flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-2 border rounded-lg transition-colors text-xs sm:text-sm ${
+                  showBatchMode 
+                    ? 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700 text-green-700 dark:text-green-400' 
+                    : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800'
+                }`}
+              >
+                <CheckSquare className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="hidden sm:inline">{showBatchMode ? '退出批量' : '批量操作'}</span>
+              </button>
               <button
                 onClick={() => setIsTaskFormOpen(true)}
                 className="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors text-xs sm:text-sm"
@@ -249,6 +335,9 @@ export default function Home() {
                     onToggleComplete={handleToggleComplete}
                     onEdit={setEditingTask}
                     onDelete={handleDeleteTask}
+                    showSelectBox={showBatchMode}
+                    isSelected={selectedTasks.includes(task.id)}
+                    onSelect={handleTaskSelect}
                   />
                 </div>
               ))}
@@ -256,6 +345,19 @@ export default function Home() {
           )}
         </div>
       </div>
+
+      {/* 批量操作工具栏 */}
+      <BatchActionsBar
+        selectedCount={selectedTasks.length}
+        totalCount={tasks.length}
+        onSelectAll={handleSelectAll}
+        onDeselectAll={handleDeselectAll}
+        onBatchDelete={handleBatchDelete}
+        onBatchComplete={handleBatchComplete}
+        onBatchUncomplete={handleBatchUncomplete}
+        isAllSelected={selectedTasks.length === tasks.length && tasks.length > 0}
+        isVisible={showBatchMode && selectedTasks.length > 0}
+      />
 
       {/* 任务表单弹窗 */}
       <TaskForm

@@ -260,11 +260,11 @@ export default function TaskForm({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              截止日期
+              截止日期和时间
             </label>
             <input
-              type="date"
-              value={formData.dueDate ? new Date(formData.dueDate).toISOString().split('T')[0] : ''}
+              type="datetime-local"
+              value={formData.dueDate ? new Date(formData.dueDate.getTime() - formData.dueDate.getTimezoneOffset() * 60000).toISOString().slice(0, 16) : ''}
               onChange={(e) => setFormData({ 
                 ...formData, 
                 dueDate: e.target.value ? new Date(e.target.value) : null 
