@@ -7,6 +7,7 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
     const completed = searchParams.get('completed')
     const categoryId = searchParams.get('categoryId')
+    const priority = searchParams.get('priority')
     const search = searchParams.get('search')
 
     const whereClause: any = {}
@@ -19,10 +20,14 @@ export async function GET(request: NextRequest) {
       whereClause.categoryId = categoryId
     }
     
+    if (priority) {
+      whereClause.priority = priority
+    }
+    
     if (search) {
       whereClause.OR = [
-        { title: { contains: search, mode: 'insensitive' } },
-        { description: { contains: search, mode: 'insensitive' } }
+        { title: { contains: search } },
+        { description: { contains: search } }
       ]
     }
 

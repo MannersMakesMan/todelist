@@ -27,6 +27,7 @@ export default function Home() {
       const params = new URLSearchParams()
       if (filters.completed !== undefined) params.append('completed', String(filters.completed))
       if (filters.categoryId) params.append('categoryId', filters.categoryId)
+      if (filters.priority) params.append('priority', filters.priority)
       if (filters.search) params.append('search', filters.search)
 
       const response = await fetch(`/api/tasks?${params.toString()}`)

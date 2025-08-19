@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { TaskWithCategory } from '@/types'
-import { formatDate, getPriorityColor, getPriorityText, cn } from '@/lib/utils'
+import { formatDate, formatDateTime, getPriorityColor, getPriorityText, cn } from '@/lib/utils'
 import { 
   CheckCircle2, 
   Circle, 
@@ -105,8 +105,22 @@ export default function TaskCard({
                   isOverdue ? "text-red-500" : "text-gray-500 dark:text-gray-400"
                 )}>
                   <Calendar className="h-3 w-3" />
-                  <span>{formatDate(task.dueDate)}</span>
+                  <span>截止: {formatDateTime(task.dueDate)}</span>
                   {isOverdue && <Clock className="h-3 w-3 ml-1" />}
+                </div>
+              )}
+
+              {/* 创建时间 */}
+              <div className="flex items-center space-x-1 text-xs text-gray-400 dark:text-gray-500">
+                <Clock className="h-3 w-3" />
+                <span>创建: {formatDateTime(task.createdAt)}</span>
+              </div>
+
+              {/* 更新时间 */}
+              {task.updatedAt !== task.createdAt && (
+                <div className="flex items-center space-x-1 text-xs text-gray-400 dark:text-gray-500">
+                  <Clock className="h-3 w-3" />
+                  <span>更新: {formatDateTime(task.updatedAt)}</span>
                 </div>
               )}
             </div>
