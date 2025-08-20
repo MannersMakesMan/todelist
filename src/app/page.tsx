@@ -11,6 +11,7 @@ import ImportExportModal from '@/components/ImportExportModal'
 import { Plus, List, BarChart3, Tag, Download, CheckSquare } from 'lucide-react'
 import Link from 'next/link'
 import BatchActionsBar from '@/components/BatchActionsBar'
+import { useToast } from '@/contexts/ToastContext'
 
 export default function Home() {
   const [tasks, setTasks] = useState<TaskWithCategory[]>([])
@@ -22,6 +23,7 @@ export default function Home() {
   const [isImportExportOpen, setIsImportExportOpen] = useState(false)
   const [selectedTasks, setSelectedTasks] = useState<string[]>([])
   const [showBatchMode, setShowBatchMode] = useState(false)
+  const { showSuccess, showError } = useToast()
 
   // 加载数据
   const loadTasks = async () => {
@@ -73,7 +75,9 @@ export default function Home() {
 
     if (response.ok) {
       await loadTasks()
+      showSuccess('任务创建成功！')
     } else {
+      showError('创建任务失败')
       throw new Error('创建任务失败')
     }
   }
@@ -90,7 +94,9 @@ export default function Home() {
     if (response.ok) {
       await loadTasks()
       setEditingTask(null)
+      showSuccess('任务更新成功！')
     } else {
+      showError('更新任务失败')
       throw new Error('更新任务失败')
     }
   }
@@ -110,14 +116,16 @@ export default function Home() {
         body: JSON.stringify({ completed })
       })
 
-      if (!response.ok) {
+      if (response.ok) {
+        showSuccess(completed ? '任务已标记为完成' : '任务已标记为未完成')
+      } else {
         // 如果请求失败，回滚状态
         setTasks(prevTasks => 
           prevTasks.map(task => 
             task.id === id ? { ...task, completed: !completed } : task
           )
         )
-        console.error('更新任务状态失败')
+        showError('更新任务状态失败')
       }
     } catch (error) {
       // 如果网络错误，回滚状态
@@ -126,7 +134,7 @@ export default function Home() {
           task.id === id ? { ...task, completed: !completed } : task
         )
       )
-      console.error('更新任务状态失败:', error)
+      showError('更新任务状态失败')
     }
   }
 
@@ -139,6 +147,9 @@ export default function Home() {
 
     if (response.ok) {
       await loadTasks()
+      showSuccess('任务已删除')
+    } else {
+      showError('删除任务失败')
     }
   }
 
@@ -160,7 +171,8 @@ export default function Home() {
   }
 
   const handleBatchDelete = async () => {
-    if (!confirm(`确定要删除选中的 ${selectedTasks.length} 个任务吗？`)) return
+    const count = selectedTasks.length
+    if (!confirm(`确定要删除选中的 ${count} 个任务吗？`)) return
 
     try {
       await Promise.all(
@@ -170,12 +182,15 @@ export default function Home() {
       )
       await loadTasks()
       setSelectedTasks([])
+      showSuccess(`成功删除 ${count} 个任务`)
     } catch (error) {
       console.error('批量删除失败:', error)
+      showError('批量删除失败')
     }
   }
 
   const handleBatchComplete = async () => {
+    const count = selectedTasks.length
     try {
       await Promise.all(
         selectedTasks.map(id => 
@@ -188,12 +203,15 @@ export default function Home() {
       )
       await loadTasks()
       setSelectedTasks([])
+      showSuccess(`成功标记 ${count} 个任务为已完成`)
     } catch (error) {
       console.error('批量完成失败:', error)
+      showError('批量完成操作失败')
     }
   }
 
   const handleBatchUncomplete = async () => {
+    const count = selectedTasks.length
     try {
       await Promise.all(
         selectedTasks.map(id => 
@@ -206,8 +224,10 @@ export default function Home() {
       )
       await loadTasks()
       setSelectedTasks([])
+      showSuccess(`成功标记 ${count} 个任务为未完成`)
     } catch (error) {
       console.error('批量取消完成失败:', error)
+      showError('批量取消完成操作失败')
     }
   }
 

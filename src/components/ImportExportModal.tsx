@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react'
 import { X, Upload, Download, FileText, Table, Code } from 'lucide-react'
 import { parseCSV, parseExcel, exportTasks, ImportTask } from '@/lib/import-export'
+import { useToast } from '@/contexts/ToastContext'
 
 interface ImportExportModalProps {
   isOpen: boolean
@@ -20,6 +21,7 @@ export default function ImportExportModal({
   const [message, setMessage] = useState<string>('')
   const [importPreview, setImportPreview] = useState<ImportTask[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const { showLoading, hideToast, showSuccess, showError } = useToast()
 
   if (!isOpen) return null
 
@@ -40,6 +42,7 @@ export default function ImportExportModal({
 
     setIsProcessing(true)
     setMessage('')
+    const loadingToastId = showLoading('正在解析文件...')
 
     try {
       let tasks: ImportTask[] = []
@@ -58,9 +61,14 @@ export default function ImportExportModal({
 
       setImportPreview(tasks.slice(0, 5)) // 只显示前5条预览
       setMessage(`找到 ${tasks.length} 条任务数据`)
+      hideToast(loadingToastId)
+      showSuccess(`文件解析成功，找到 ${tasks.length} 条任务数据`)
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : '文件解析失败')
+      const errorMsg = error instanceof Error ? error.message : '文件解析失败'
+      setMessage(errorMsg)
       setImportPreview([])
+      hideToast(loadingToastId)
+      showError(errorMsg)
     } finally {
       setIsProcessing(false)
     }
@@ -70,6 +78,8 @@ export default function ImportExportModal({
     if (!fileInputRef.current?.files?.[0]) return
 
     setIsProcessing(true)
+    const loadingToastId = showLoading('正在导入任务...')
+    
     try {
       const file = fileInputRef.current.files[0]
       let tasks: ImportTask[] = []
@@ -88,25 +98,36 @@ export default function ImportExportModal({
 
       if (response.ok) {
         const result = await response.json()
-        setMessage(`导入完成：成功 ${result.success} 条，失败 ${result.failed} 条`)
+        const message = `导入完成：成功 ${result.success} 条，失败 ${result.failed} 条`
+        setMessage(message)
         
         if (result.errors.length > 0) {
           setMessage(prev => prev + `\n错误详情：\n${result.errors.join('\n')}`)
         }
 
+        hideToast(loadingToastId)
         if (result.success > 0) {
+          showSuccess(`导入成功！成功导入 ${result.success} 条任务`)
           // 导入成功后，延迟1秒自动关闭弹窗并刷新列表
           setTimeout(() => {
             onImportComplete()
             handleClose()
           }, 1000)
+        } else {
+          showError('导入失败，没有成功导入任何任务')
         }
       } else {
         const error = await response.json()
-        setMessage(error.error || '导入失败')
+        const errorMsg = error.error || '导入失败'
+        setMessage(errorMsg)
+        hideToast(loadingToastId)
+        showError(errorMsg)
       }
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : '导入失败')
+      const errorMsg = error instanceof Error ? error.message : '导入失败'
+      setMessage(errorMsg)
+      hideToast(loadingToastId)
+      showError(errorMsg)
     } finally {
       setIsProcessing(false)
     }
@@ -114,11 +135,18 @@ export default function ImportExportModal({
 
   const handleExport = async (format: 'csv' | 'excel' | 'json') => {
     setIsProcessing(true)
+    const loadingToastId = showLoading('正在导出任务...')
+    
     try {
       const result = await exportTasks(format)
       setMessage(result.message)
+      hideToast(loadingToastId)
+      showSuccess(`导出成功！文件已开始下载`)
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : '导出失败')
+      const errorMsg = error instanceof Error ? error.message : '导出失败'
+      setMessage(errorMsg)
+      hideToast(loadingToastId)
+      showError(errorMsg)
     } finally {
       setIsProcessing(false)
     }
