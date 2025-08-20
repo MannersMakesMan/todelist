@@ -192,6 +192,7 @@ export default function TaskForm({
               <label className="block text-sm font-medium text-gray-700">
                 任务描述
               </label>
+{/* AI生成功能暂时注释 - 待对接第三方服务
               <button
                 type="button"
                 onClick={handleGenerateDescription}
@@ -201,6 +202,7 @@ export default function TaskForm({
                 <Sparkles className="h-3 w-3" />
                 <span>{isGeneratingDescription ? '生成中...' : 'AI生成'}</span>
               </button>
+              */}
             </div>
             <textarea
               value={formData.description}
@@ -217,6 +219,7 @@ export default function TaskForm({
                 <label className="block text-sm font-medium text-gray-700">
                   分类
                 </label>
+{/* AI推荐功能暂时注释 - 待对接第三方服务
                 <button
                   type="button"
                   onClick={handleSuggestCategory}
@@ -226,6 +229,7 @@ export default function TaskForm({
                   <Wand2 className="h-3 w-3" />
                   <span>{isGeneratingCategory ? '推荐中...' : 'AI推荐'}</span>
                 </button>
+                */}
               </div>
               <select
                 value={formData.categoryId}

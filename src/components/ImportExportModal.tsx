@@ -95,7 +95,11 @@ export default function ImportExportModal({
         }
 
         if (result.success > 0) {
-          onImportComplete()
+          // 导入成功后，延迟1秒自动关闭弹窗并刷新列表
+          setTimeout(() => {
+            onImportComplete()
+            handleClose()
+          }, 1000)
         }
       } else {
         const error = await response.json()

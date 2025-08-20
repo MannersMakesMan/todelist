@@ -96,14 +96,37 @@ export default function Home() {
   }
 
   const handleToggleComplete = async (id: string, completed: boolean) => {
-    const response = await fetch(`/api/tasks/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ completed })
-    })
+    // 乐观更新：立即更新UI
+    setTasks(prevTasks => 
+      prevTasks.map(task => 
+        task.id === id ? { ...task, completed } : task
+      )
+    )
 
-    if (response.ok) {
-      await loadTasks()
+    try {
+      const response = await fetch(`/api/tasks/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ completed })
+      })
+
+      if (!response.ok) {
+        // 如果请求失败，回滚状态
+        setTasks(prevTasks => 
+          prevTasks.map(task => 
+            task.id === id ? { ...task, completed: !completed } : task
+          )
+        )
+        console.error('更新任务状态失败')
+      }
+    } catch (error) {
+      // 如果网络错误，回滚状态
+      setTasks(prevTasks => 
+        prevTasks.map(task => 
+          task.id === id ? { ...task, completed: !completed } : task
+        )
+      )
+      console.error('更新任务状态失败:', error)
     }
   }
 
@@ -365,7 +388,11 @@ export default function Home() {
           setEditingTask(null)
         }}
         onSubmit={editingTask ? handleUpdateTask : handleCreateTask}
-        initialData={editingTask || undefined}
+        initialData={editingTask ? {
+          ...editingTask,
+          description: editingTask.description || undefined,
+          categoryId: editingTask.categoryId || undefined
+        } : undefined}
         categories={categories}
       />
 
