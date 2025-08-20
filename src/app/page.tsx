@@ -10,7 +10,6 @@ import EmptyState from '@/components/EmptyState'
 import ImportExportModal from '@/components/ImportExportModal'
 import { Plus, List, BarChart3, Tag, Download, CheckSquare } from 'lucide-react'
 import Link from 'next/link'
-import ThemeToggle from '@/components/ThemeToggle'
 import BatchActionsBar from '@/components/BatchActionsBar'
 
 export default function Home() {
@@ -198,37 +197,36 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* 页面头部 */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center space-x-3">
-                <List className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+              <h1 className="text-3xl font-bold text-gray-900 flex items-center space-x-3">
+                <List className="h-8 w-8 text-blue-600" />
                 <span>TodoList 任务管理</span>
               </h1>
-              <p className="mt-2 text-gray-600 dark:text-gray-300">高效管理您的日常任务</p>
+              <p className="mt-2 text-gray-600">高效管理您的日常任务</p>
             </div>
             <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-              <ThemeToggle />
               <button
                 onClick={() => setIsImportExportOpen(true)}
-                className="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-xs sm:text-sm"
+                className="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-xs sm:text-sm"
               >
                 <Download className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span className="hidden sm:inline">导入导出</span>
               </button>
               <Link
                 href="/stats"
-                className="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-xs sm:text-sm"
+                className="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-xs sm:text-sm"
               >
                 <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span className="hidden sm:inline">数据统计</span>
               </Link>
               <Link
                 href="/categories"
-                className="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-xs sm:text-sm"
+                className="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-xs sm:text-sm"
               >
                 <Tag className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span className="hidden sm:inline">管理分类</span>
@@ -240,8 +238,8 @@ export default function Home() {
                 }}
                 className={`flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-2 border rounded-lg transition-colors text-xs sm:text-sm ${
                   showBatchMode 
-                    ? 'bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700 text-green-700 dark:text-green-400' 
-                    : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800'
+                    ? 'bg-green-100 border-green-300 text-green-700' 
+                    : 'border-gray-300 text-gray-700 hover:bg-gray-50'
                 }`}
               >
                 <CheckSquare className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -249,7 +247,7 @@ export default function Home() {
               </button>
               <button
                 onClick={() => setIsTaskFormOpen(true)}
-                className="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors text-xs sm:text-sm"
+                className="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-xs sm:text-sm"
               >
                 <Plus className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span>新建任务</span>
@@ -259,47 +257,47 @@ export default function Home() {
 
           {/* 统计卡片 */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
+            <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">总任务</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.total}</p>
+                  <p className="text-sm font-medium text-gray-600">总任务</p>
+                  <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
                 </div>
-                <div className="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg">
-                  <List className="h-6 w-6 text-gray-600 dark:text-gray-300" />
+                <div className="p-2 bg-gray-100 rounded-lg">
+                  <List className="h-6 w-6 text-gray-600" />
                 </div>
               </div>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
+            <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">待完成</p>
-                  <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{stats.pending}</p>
+                  <p className="text-sm font-medium text-gray-600">待完成</p>
+                  <p className="text-2xl font-bold text-blue-600">{stats.pending}</p>
                 </div>
-                <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                  <Plus className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  <Plus className="h-6 w-6 text-blue-600" />
                 </div>
               </div>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
+            <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">已完成</p>
-                  <p className="text-2xl font-bold text-green-600 dark:text-green-400">{stats.completed}</p>
+                  <p className="text-sm font-medium text-gray-600">已完成</p>
+                  <p className="text-2xl font-bold text-green-600">{stats.completed}</p>
                 </div>
-                <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
-                  <BarChart3 className="h-6 w-6 text-green-600 dark:text-green-400" />
+                <div className="p-2 bg-green-100 rounded-lg">
+                  <BarChart3 className="h-6 w-6 text-green-600" />
                 </div>
               </div>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
+            <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">完成率</p>
-                  <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">{stats.completionRate}%</p>
+                  <p className="text-sm font-medium text-gray-600">完成率</p>
+                  <p className="text-2xl font-bold text-purple-600">{stats.completionRate}%</p>
                 </div>
-                <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-                  <BarChart3 className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                <div className="p-2 bg-purple-100 rounded-lg">
+                  <BarChart3 className="h-6 w-6 text-purple-600" />
                 </div>
               </div>
             </div>
@@ -316,7 +314,7 @@ export default function Home() {
         </div>
 
         {/* 任务列表 */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
           {isLoading ? (
             <LoadingSpinner text="加载任务中..." />
           ) : tasks.length === 0 ? (
@@ -327,7 +325,7 @@ export default function Home() {
               onAction={() => setIsTaskFormOpen(true)}
             />
           ) : (
-            <div className="divide-y divide-gray-100 dark:divide-gray-700">
+            <div className="divide-y divide-gray-100">
               {tasks.map((task) => (
                 <div key={task.id} className="p-4">
                   <TaskCard

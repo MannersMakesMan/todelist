@@ -19,14 +19,15 @@
 - ✅ **数据统计看板** (15分) - 完成率统计、图表分析、趋势展示
 - ✅ **AI任务助手** (15分) - 智能生成任务描述、推荐分类
 - ✅ **分类管理** (8分) - 创建/编辑/删除分类，颜色标识
-- ✅ **深色模式** (5分) - 明暗主题切换，跟随系统设置
+- ✅ **高级搜索与过滤** (10分) - 多条件筛选、实时搜索、搜索历史
+- ✅ **批量操作** (10分) - 批量选择、删除、标记完成、全选反选
 
 ## 🛠️ 技术栈
 
 - **前端框架**: Next.js 15 (App Router)
 - **开发语言**: TypeScript
 - **样式框架**: Tailwind CSS
-- **数据库**: PostgreSQL (Vercel Postgres/Supabase)
+- **数据库**: Vercel Postgres (PostgreSQL)
 - **ORM**: Prisma
 - **图表库**: Recharts
 - **图标库**: Lucide React
@@ -168,34 +169,20 @@ todo-app2/
 
 ## 🌐 部署指南
 
-### Vercel 部署
+### 🚀 一键部署到 Vercel
 
-1. **创建 Vercel 项目**
-   ```bash
-   npx vercel
-   ```
+> **推荐使用 Vercel Postgres** - 与 Vercel 完美集成，零配置部署
 
-2. **配置环境变量**
-   在 Vercel Dashboard 中设置以下环境变量：
-   - `DATABASE_URL`: 数据库连接字符串
-   - 其他可选的 API Keys
+#### 📋 快速部署步骤 (5分钟)
+查看详细指南：[`DEPLOY_QUICK_START.md`](./DEPLOY_QUICK_START.md)
 
-3. **部署**
-   ```bash
-   npx vercel --prod
-   ```
+1. 推送代码到 GitHub
+2. 在 [vercel.com](https://vercel.com) 导入项目  
+3. 创建 Vercel Postgres 数据库
+4. 一键部署完成
 
-### 数据库设置
-
-#### 选项1: Vercel Postgres
-1. 在 Vercel Dashboard 中创建 Postgres 数据库
-2. 复制连接字符串到环境变量
-3. 部署后自动运行数据库推送
-
-#### 选项2: Supabase
-1. 创建 Supabase 项目
-2. 获取数据库连接字符串
-3. 配置环境变量并部署
+#### 📖 完整部署文档
+详细部署步骤和配置说明：[`VERCEL_DEPLOYMENT.md`](./VERCEL_DEPLOYMENT.md)
 
 ## 📖 使用说明
 

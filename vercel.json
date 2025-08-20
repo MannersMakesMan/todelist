@@ -1,11 +1,8 @@
 {
-  "buildCommand": "npm run build && npm run db:generate",
-  "env": {
-    "DATABASE_URL": "@database_url"
-  },
   "functions": {
     "app/api/**/*.ts": {
       "maxDuration": 10
     }
-  }
+  },
+  "regions": ["hkg1", "sfo1"]
 }

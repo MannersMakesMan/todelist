@@ -49,7 +49,7 @@ export default function TaskCard({
 
   return (
     <div className={cn(
-      "bg-white dark:bg-gray-800 rounded-lg shadow-sm border-l-4 p-3 sm:p-4 transition-all duration-200 hover:shadow-md",
+      "bg-white rounded-lg shadow-sm border-l-4 p-3 sm:p-4 transition-all duration-200 hover:shadow-md",
       task.completed ? "opacity-75 border-l-green-400" : "border-l-blue-400",
       isOverdue && "border-l-red-400",
       isSelected && "ring-2 ring-blue-500 ring-opacity-50"
@@ -83,16 +83,16 @@ export default function TaskCard({
 
           <div className="flex-1 min-w-0">
             <h3 className={cn(
-              "text-sm font-medium text-gray-900 dark:text-white break-words",
-              task.completed && "line-through text-gray-500 dark:text-gray-400"
+              "text-sm font-medium text-gray-900 break-words",
+              task.completed && "line-through text-gray-500"
             )}>
               {task.title}
             </h3>
             
             {task.description && (
               <p className={cn(
-                "mt-1 text-xs sm:text-sm text-gray-600 dark:text-gray-300 break-words",
-                task.completed && "line-through text-gray-400 dark:text-gray-500"
+                "mt-1 text-xs sm:text-sm text-gray-600 break-words",
+                task.completed && "line-through text-gray-400"
               )}>
                 {task.description}
               </p>
@@ -124,7 +124,7 @@ export default function TaskCard({
               {task.dueDate && (
                 <div className={cn(
                   "flex items-center space-x-1 text-xs",
-                  isOverdue ? "text-red-500" : "text-gray-500 dark:text-gray-400"
+                  isOverdue ? "text-red-500" : "text-gray-500"
                 )}>
                   <Calendar className="h-3 w-3" />
                   <span>截止: {formatDateTime(task.dueDate)}</span>
@@ -133,14 +133,14 @@ export default function TaskCard({
               )}
 
               {/* 创建时间 */}
-              <div className="flex items-center space-x-1 text-xs text-gray-400 dark:text-gray-500">
+              <div className="flex items-center space-x-1 text-xs text-gray-400">
                 <Clock className="h-3 w-3" />
                 <span>创建: {formatDateTime(task.createdAt)}</span>
               </div>
 
               {/* 更新时间 */}
               {task.updatedAt !== task.createdAt && (
-                <div className="flex items-center space-x-1 text-xs text-gray-400 dark:text-gray-500">
+                <div className="flex items-center space-x-1 text-xs text-gray-400">
                   <Clock className="h-3 w-3" />
                   <span>更新: {formatDateTime(task.updatedAt)}</span>
                 </div>
