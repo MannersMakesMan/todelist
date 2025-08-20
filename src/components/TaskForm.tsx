@@ -30,6 +30,18 @@ export default function TaskForm({
   const [isGeneratingDescription, setIsGeneratingDescription] = useState(false)
   const [isGeneratingCategory, setIsGeneratingCategory] = useState(false)
 
+  // 安全地格式化日期为 datetime-local 输入格式
+  const formatDateForInput = (date: Date | string | null): string => {
+    if (!date) return ''
+    try {
+      const dateObj = date instanceof Date ? date : new Date(date)
+      if (isNaN(dateObj.getTime())) return ''
+      return new Date(dateObj.getTime() - dateObj.getTimezoneOffset() * 60000).toISOString().slice(0, 16)
+    } catch {
+      return ''
+    }
+  }
+
   useEffect(() => {
     if (initialData) {
       setFormData({
@@ -268,7 +280,7 @@ export default function TaskForm({
             </label>
             <input
               type="datetime-local"
-              value={formData.dueDate ? new Date(formData.dueDate.getTime() - formData.dueDate.getTimezoneOffset() * 60000).toISOString().slice(0, 16) : ''}
+              value={formatDateForInput(formData.dueDate)}
               onChange={(e) => setFormData({ 
                 ...formData, 
                 dueDate: e.target.value ? new Date(e.target.value) : null 

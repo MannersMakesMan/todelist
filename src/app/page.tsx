@@ -391,7 +391,8 @@ export default function Home() {
         initialData={editingTask ? {
           ...editingTask,
           description: editingTask.description || undefined,
-          categoryId: editingTask.categoryId || undefined
+          categoryId: editingTask.categoryId || undefined,
+          dueDate: editingTask.dueDate ? new Date(editingTask.dueDate) : null
         } : undefined}
         categories={categories}
       />
